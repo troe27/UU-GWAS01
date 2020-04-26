@@ -1,13 +1,45 @@
-![Datasaur](figures/DinoSequentialSmaller.gif)
-#TOC
-# Overview & Motivation:
- Why do we visualise raw data? Raw data is lame! where's that cool association? let me see the stats!
- We visualise our raw data to:
-  - Make sure that all assumptions of our planned tests are met.
-  - Catch errors that have escaped initial quality control.
-  - Spot patterns that would be hidden by advanced statistics.
 
-#Task1
+# TOC
+# Overview & Motivation:
+**Today we are trying to do two things:**
+ - Visualise raw data
+ - Explore the relationship between data
+ If you're like me, you might think:
+ *Why do we visualise raw data? Raw data is lame! where's that cool association? let me see the stats!*
+ We visualise our raw data to:
+  - Catch errors that have escaped initial quality control. ( While many pipette-people worked very hard to bring us this data, data generation and collection is as flawed as any aspect of science.)
+  - Spot patterns that would be hidden by summary-statistics.
+  - Make sure that all assumptions of our planned tests are met. For example, many statistical tests require that our data is normally-distributed.
+
+
+
+
+# Dataset 1
+Dataset 1 is a quantitative trait - body size of Population of Bananaspiders, [*Argiope appensa*](https://en.wikipedia.org/wiki/Argiope_appensa)
+This dataset has two issues - one of them a data-entry error, the other one a biological feature of the data.
+- Can you find them?
+- Can you remove or rectify the data-entry error?
+- plot the data as a boxplot, as well as a scatterplot or histogram.
+- what can you see in the histogram/scatterplot that you cannot see in the boxplot?
+  - optional: what is the biological significance of this?
+
+tips:
+
+
+# Dataset 2
+Dataset 2 contains Growth-data from an [*Arabidopsis thaliana*]() experiment in the Greenhouse - detailing the height at first flowering. The samples were grown in two different greenhouses that were supposed to be kept at the exact same conditions.
+Unfortunately something has gone wrong with the environmental control of the second greenhouse, resulting in a average temperature of 22C instead of 15C, resulting in plants that are, on average, 3 centimetres taller than the ones from the colder greenhouse.  
+![temp_diff](figures/temperature_difference.png)  
+Before we redo the experiment, we would like to know if this difference is just a shift in the mean, and if the distributions are roughly the same.
+For this we are going to use min-max feature scaling:
+$z = frac{x - MIN(x)}{MAX(x)-MIN(x)}$
+
+
+
+
+
+
+
 Visualise the galton height data.
  - load the data
  - plot overall distribution/histogram (hist, kde?)
@@ -45,3 +77,6 @@ Kinship matrix -> how is it made?
 From family data -> explanation, but then readymade from galton data
 Estimated from genomic data -> plink2, using chicken data, compare with pedigree
 Using kinship matrices with plink2/REML to estimate heritability
+
+
+![from:https://www.autodeskresearch.com/publications/samestats](figures/DinoSequentialSmaller.gif)
