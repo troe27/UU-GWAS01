@@ -175,7 +175,7 @@ ggplot(data=ata)+
 <br>
 
 
-when looking at the Distributions, we can see that they are almost identical, although not exactly normal: both display a small but notable positive [skew](https://en.wikipedia.org/wiki/Skewness). While small deviations are usually within the tolerance of most tests, stronger positive skew, could, for example, be remedied by a squareroot transform of the data.
+when looking at the Distributions, we can see that they are almost identical, although not exactly normal: both display a small but notable positive [skew](https://en.wikipedia.org/wiki/Skewness)(a longer "tail on the right). While small deviations are usually within the tolerance of most tests, stronger positive skew, could, for example, be remedied by a squareroot transform of the data.
 
 - take the square-root of the data and plot the distribution.
 
@@ -213,11 +213,76 @@ Dataset 3 is a very famous dataset - its the 1886 Height Data collected by Galto
 
 - Visualise and explore the data.
  - plot all individuals using a visualisation of your choice (e.g. histogram, pointplot, boxplot)
- - plot all individuals - but separated by gender
+ - plot all individuals while accounting for/visualising their sex
  - plot a scatterplot with individuals height as Y and mean parent height as X Variable.
     - If you want, add a linear model of height as a function of mean-parent-height.
 
+    details><summary>walkthrough</summary>
+    <p>
+
+    ```python
+    # load data, remember the .tsv ending! this file is tab separated.
+    ghdata <- read.csv("data/galton_height_data.tsv", sep="\t")
+
+    # plot overall distribution of values as a histogram
+    ggplot(data = ghdata) + geom_histogram(mapping=aes(x=height))
+    # europeans, wondering why the numbers seem off? 1886 england didnt use centimetres
+
+    # plotting one boxplot per gender
+    ggplot(data = ghdata)+ geom_boxplot(mapping = aes(y=height, x=gender))
+
+    # take the mean of father & mother for each individual
+    # save as a column in the dataframe
+    ghdata$mean_parent <- rowMeans(ghdata[c('father', 'mother')], na.rm=TRUE)
+
+
+    # ggplot2 has a rather convenient plotting option in geom_smooth, so i dont even need to plug in a linear model library :)
+    ggplot(data = ghdata)+
+      geom_point(mapping = aes(x=mean_parent, y=height, colour=gender))+
+      geom_smooth(mapping = aes(x=mean_parent, y=height),method = "lm", formula = height~mean_parent) # height as a function of mid-parent height
+
+    # if i want to have a closer look at the summary stats of the model, i have to do a real fit, though.
+
+    library("lme4")
+    height_fit <- lm(height~mean_parent, data=ghdata)
+    summary(height_fit)
+    ```
+
+    </p>
+    </details>
+
+
+    <br>
+    <br>
+
+When i ran the linear model, the summary output looked like this:
+
+```
+Call:
+lm(formula = height ~ mean_parent, data = ghdata)
+
+Residuals:
+    Min      1Q  Median      3Q     Max
+-8.9814 -2.6604 -0.1642  2.7795 11.6762
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  22.1488     4.3076   5.142 3.34e-07 ***
+mean_parent   0.6693     0.0646  10.360  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.388 on 896 degrees of freedom
+Multiple R-squared:  0.107,	Adjusted R-squared:  0.106
+F-statistic: 107.3 on 1 and 896 DF,  p-value: < 2.2e-16
+```
+
+While the correlation is very significant, the pairwise correlation (Rsquared) is lower than one would maybe expect.
+ - can you think of factors that our model didnt account for?
 
 
 
+ # Finish
+
+ 
 ![from:https://www.autodeskresearch.com/publications/samestats](figures/DinoSequentialSmaller.gif)
