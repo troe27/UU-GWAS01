@@ -117,7 +117,7 @@ ggplot(data=a_data_no_outliers)+
 
 Dataset 2 contains Growth-data from an [*Arabidopsis thaliana*]() experiment in the Greenhouse - detailing the height at first flowering. The samples were grown in two different greenhouses that were supposed to be kept at the exact same conditions.
 Unfortunately something has gone wrong with the environmental control of the second greenhouse, resulting in a average temperature of 22C instead of 15C, resulting in plants that are, on average, 3 centimetres taller than the ones from the colder greenhouse.  
-![temp_diff](figures/temperature_difference.png)  
+![temp_diff](figures/temperature_difference_many.png)  
 Before we redo the experiment, we would like to know if this difference is just a shift in the mean, and if the distributions are roughly the same.
 For this we are going to use min-max feature scaling:  
 
