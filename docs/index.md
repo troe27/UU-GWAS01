@@ -174,7 +174,7 @@ when looking at the Distributions, we can see that they are almost identical, al
 
 
 
-details><summary>walkthrough</summary>
+<details><summary>walkthrough</summary>
 <p>
 
 ```
