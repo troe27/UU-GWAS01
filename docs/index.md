@@ -1,82 +1,223 @@
 
 # TOC
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [TOC](#toc)
+- [Overview & Motivation:](#overview-motivation)
+- [Dataset1](#dataset1)
+- [we only want the rows where the value of B is below 300:](#we-only-want-the-rows-where-the-value-of-b-is-below-300)
+- [load libraries](#load-libraries)
+- [read in the data:](#read-in-the-data)
+- [plot as boxplot, colour outliers in red](#plot-as-boxplot-colour-outliers-in-red)
+- [remove the outlier:](#remove-the-outlier)
+- [redo the plot](#redo-the-plot)
+- [plot individual datapoints next to the histogram:](#plot-individual-datapoints-next-to-the-histogram)
+- [Dataset2](#dataset2)
+- [split the data](#split-the-data)
+- [add normalised height data as column to dataframes.](#add-normalised-height-data-as-column-to-dataframes)
+- [concatenate the two dataframes for convenience:](#concatenate-the-two-dataframes-for-convenience)
+- [take the squareroot of the normalised height-data:](#take-the-squareroot-of-the-normalised-height-data)
+- [create a new column with the squareroot transformed data in the dataframe:](#create-a-new-column-with-the-squareroot-transformed-data-in-the-dataframe)
+- [plot the  transformed data (blue) alongside the original (in red):](#plot-the-transformed-data-blue-alongside-the-original-in-red)
+- [Dataset3](#dataset3)
+
+<!-- /TOC -->
 # Overview & Motivation:
 **Today we are trying to do two things:**
  - Visualise raw data
- - Explore the relationship between data
- If you're like me, you might think:
- *Why do we visualise raw data? Raw data is lame! where's that cool association? let me see the stats!*
+ - Explore the relationship between data.  
+
  We visualise our raw data to:
-  - Catch errors that have escaped initial quality control. ( While many pipette-people worked very hard to bring us this data, data generation and collection is as flawed as any aspect of science.)
+  - Catch errors that have escaped initial quality control.
   - Spot patterns that would be hidden by summary-statistics.
-  - Make sure that all assumptions of our planned tests are met. For example, many statistical tests require that our data is normally-distributed.
+  - Make sure that all assumptions of our planned tests are met. e.g. many statistical tests require that our data is normally-distributed.
 
 
-
-
-# Dataset 1
-Dataset 1 is a quantitative trait - body size of Population of Bananaspiders, [*Argiope appensa*](https://en.wikipedia.org/wiki/Argiope_appensa)
+# Dataset1
+Dataset 1 is a quantitative trait - body size of Population of Bananaspiders, [*Argiope appensa*](https://en.wikipedia.org/wiki/Argiope_appensa).
 This dataset has two issues - one of them a data-entry error, the other one a biological feature of the data.
 - Can you find them?
 - Can you remove or rectify the data-entry error?
 - plot the data as a boxplot, as well as a scatterplot or histogram.
 - what can you see in the histogram/scatterplot that you cannot see in the boxplot?
-  - optional: what is the biological significance of this?
+- what is the biological significance of this?
 
-tips:
+**Notes:**  
+I'm using the  [``ggplot2``](https://ggplot2.tidyverse.org/) library for plotting, since it simplifies the process a bit. The Syntax, however, is a little bit different.
+You are free to use whatever way of visualisation you are most comfortable with.
+In ggplot2 lpotting consists of different parts that declare which data is to be used, and another part that declares what "geom" is used to map this data onto our canvas. For example, if i wanted to plot the column ``A`` in the Dataframe ``Dataframe1`` as a boxplot, my code would look like this:
+
+```Python
+
+ggplot(data=Dataframe1)+ #the part that declares what data to plot
+geom_boxplot(mapping=aes(y=A, x=1)) # the part that declares how the data should map to  the canvas.
+
+```
+
+<details><summary>tips</summary>
+<p>
+
+- you can use the ```subset``` function to subset a dataframe based on conditions, e.g.
 
 
-# Dataset 2
+```Python
+Dataframe_2 # A dataframe with two columns, A and B.
+# we only want the rows where the value of B is below 300:
+filtered_df2 <- subset(Dataframe_2, B<300)
+```
+
+- the geoms for boxplot, scatterplot and histogram are called ``geom_boxplot``, ``geom_point``, and ``geom_histogram``
+
+</p>
+</details>
+
+
+<br>
+<br>
+
+<details><summary>walkthrough</summary>
+<p>
+
+```
+# load libraries
+library("data.table")
+library("ggplot2")
+
+#read in the data:
+a_data <- read.csv("path/to/argiope_appensa_ss_simulata.csv", sep=",") #change path to yours!
+
+# plot as boxplot, colour outliers in red
+ggplot(data=a_data)+geom_boxplot(mapping = aes(y=bodysize_cm),outlier.colour = "red")
+```
+![bodysize1](figures/bodysize1.png)  
+As you can see in this plot, most data is bunched up at the bottom of the graph, with one outlier at the top.
+Given that the Y-axis is the bodysize of a small spider in centimeter, it is unlikely that a bodysize of over 500 cm represents a real datapoint. maybe someone forgot to place the decimal point during dataentry?
+```
+#remove the outlier:
+a_data_no_outliers <- subset(a_data, bodysize_cm<100) # remove all oversized spiders.
+# redo the plot
+ggplot(data=a_data_no_outliers)+geom_boxplot(mapping = aes(y=bodysize_cm),outlier.colour = "red")
+```
+![bodysize2](figures/bodysize2.png)  
+This looks more reasonable.
+
+```
+# plot individual datapoints next to the histogram:
+ggplot(data=a_data_no_outliers)+
+  geom_boxplot(mapping = aes(y=bodysize_cm),outlier.colour = "red")+
+  geom_point(mapping = aes(y=bodysize_cm, x=1), alpha=0.2) #  using geom_point instead of geom_boxplot
+
+```
+![bodysize3](figures/bodysize3.png)
+
+here you can see that the boxplot hid something: the data clusters into two groups: one of big spiders and one of small spiders. Looking at the full dataframe, one can guess that this is due to sexual dimorphism. In spiders, the female is often much larger than the male. lets plot them as separate histograms, males shaded purple, females in orange.
+```
+ggplot(data=a_data_no_outliers)+
+  geom_histogram(data=subset(a_data_no_outliers, sex=="male"),mapping = aes(x=bodysize_cm), alpha=0.5, fill="purple")+
+  geom_histogram(data=subset(a_data_no_outliers, sex=="female"),mapping = aes(x=bodysize_cm), alpha=0.5, fill="orange")
+```
+![bodysize4](figures/bsize4.png)
+
+</p>
+</details>
+
+
+<br>
+<br>
+
+
+# Dataset2
+
 Dataset 2 contains Growth-data from an [*Arabidopsis thaliana*]() experiment in the Greenhouse - detailing the height at first flowering. The samples were grown in two different greenhouses that were supposed to be kept at the exact same conditions.
 Unfortunately something has gone wrong with the environmental control of the second greenhouse, resulting in a average temperature of 22C instead of 15C, resulting in plants that are, on average, 3 centimetres taller than the ones from the colder greenhouse.  
 ![temp_diff](figures/temperature_difference.png)  
 Before we redo the experiment, we would like to know if this difference is just a shift in the mean, and if the distributions are roughly the same.
-For this we are going to use min-max feature scaling:
-$z = frac{x - MIN(x)}{MAX(x)-MIN(x)}$
+For this we are going to use min-max feature scaling:  
+![min_max](figures/minmax.png)  
+which transforms a dataset so it is bounded between 0 and 1.  
+
+used on a R Dataframe column, it could look like this:
+```R
+z <- (dataframe$column-min(dataframe$column))/(max(dataframe$column)-min(dataframe$column))
+```
+
+- Normalise the data using min-max feature scaling and compare the two greenhouses visually by plotting them as histograms.
+
+<details><summary>walkthrough</summary>
+<p>
+
+```
+ata <- read.csv("data/A_thaliana_ss_simulata.tsv", sep = "\t") # tab separated
+
+# split the data
+ata15= subset(ata, temperature == "15")
+ata22= subset(ata, temperature == "22")
+
+z15 <- (ata15$height-min(ata15$height))/(max(ata15$height)-min(ata15$height))
+z22 <- (ata22$height-min(ata22$height))/(max(ata22$height)-min(ata22$height))
+
+# add normalised height data as column to dataframes.
+ata15$height_norm <- z15
+ata22$height_norm <- z22
+
+ggplot(data=ata)+
+  geom_histogram(data = ata22,mapping = aes(x=height_norm), alpha=0.5, fill="orange") +
+  geom_histogram(data = ata15,mapping = aes(x=height_norm), alpha=0.5,fill ='blue')
 
 
+```
+
+</p>
+</details>
 
 
+<br>
+<br>
 
 
+when looking at the Distributions, we can see that they are almost identical, although not exactly normal: both display a small but notable positive [skew](https://en.wikipedia.org/wiki/Skewness). While small deviations are usually within the tolerance of most tests, stronger positive skew, could, for example, be remedied by a squareroot transform of the data.
 
-Visualise the galton height data.
- - load the data
- - plot overall distribution/histogram (hist, kde?)
- - plot box & whisker by gender
- - plot scatter with individual, mean parent height
-#Task2
+- take the square-root of the data and plot the distribution.
 
-#Task3
+details><summary>walkthrough</summary>
+<p>
 
-#Task4
+```
+# concatenate the two dataframes for convenience:
+ata_new <- rbind(ata15,ata22)
 
-#Task5
+# take the squareroot of the normalised height-data:
+sqrt_height_norm <- sqrt(ata_new$height_norm)
 
-Visualise phenotypes and calculate heritability
-Time: 13:15-16:00, 2h45m
-Tools: R, plink2
+# create a new column with the squareroot transformed data in the dataframe:
+ata_new$sqrt_norm_height <- sqrt_height_norm
 
-Learning outcomes:
-The students will familiarise themselves with a few different ways of visualising phenotypes, mainly scatter, box & whisker plots and histograms.
-The students will get a decent understanding of how a polygenic architecture will influence the phenotype distribution.
-The students will get a vague idea of why the normalisation of some data is necessary, and how to go about it.
-The students will get a deeper understanding of what heritability is.
-The students will learn how to build a kinship matrix from pedigree data, as well as estimate one from genomic data using plink2
-The students will learn how to estimate heritability from kinship+phenotype data using REML methods built into plink2
+# plot the  transformed data (blue) alongside the original (in red):
+ggplot(data=ata_new)+ geom_histogram(mapping = aes(x=sqrt_norm_height), alpha=0.5, fill='blue')+ geom_histogram(mapping = aes(x=height_norm), alpha=0.5, fill="red")
 
-Tasks:
-Phenotypes:
-Visualise different phenotypes. What kind of genetic architecture?
-Maybe have them run some basic simulations first for n biallelic genes with 1/n and  -1/n effect size and  ( I have them in python, need to translate them to R), and get a feeling for phenotype distributions in form of histograms.
-Look at two different “real-world” phenotypes and guess what the genetic architecture could be ( e.g. Galton height data & something that’s vaguely monogenic.)
-Normalisation of phenotypic data. Why and how.
-Heritability:
-Vague overview -> galton height data for basic understanding -> scatter with some colorations for f/m
-Kinship matrix -> how is it made?
-From family data -> explanation, but then readymade from galton data
-Estimated from genomic data -> plink2, using chicken data, compare with pedigree
-Using kinship matrices with plink2/REML to estimate heritability
+```
+
+</p>
+</details>
+
+
+<br>
+<br>
+
+
+- Beside a deviation from normal assumptions, can you think of some more reasons why it could still be problematic to use the data?
+
+# Dataset3
+
+Dataset 3 is a very famous dataset - its the 1886 Height Data collected by Galton. It contains data on the height of individuals and their parents.
+
+- Visualise and explore the data.
+ - plot all individuals using a visualisation of your choice (e.g. histogram, pointplot, boxplot)
+ - plot all individuals - but separated by gender
+ - plot a scatterplot with individuals height as Y and mean parent height as X Variable.
+    - If you want, add a linear model of height as a function of mean-parent-height.
+
+
 
 
 ![from:https://www.autodeskresearch.com/publications/samestats](figures/DinoSequentialSmaller.gif)
