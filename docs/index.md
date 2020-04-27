@@ -213,7 +213,7 @@ Dataset 3 is a very famous dataset - its the 1886 Height Data collected by Galto
     - If you want, add a linear model of height as a function of mean-parent-height.
 
 
-    details><summary>walkthrough</summary>
+    <details><summary>walkthrough</summary>
     <p>
 
     ```python
