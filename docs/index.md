@@ -223,6 +223,7 @@ Dataset 3 is a very famous dataset - its the 1886 Height Data collected by Galto
  - plot a scatterplot with individuals height as Y and mean parent height as X Variable.
     - If you want, add a linear model of height as a function of mean-parent-height.
 
+
     details><summary>walkthrough</summary>
     <p>
 
