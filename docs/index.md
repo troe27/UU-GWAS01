@@ -47,8 +47,7 @@ I'm using the  [``ggplot2``](https://ggplot2.tidyverse.org/) library for plottin
 You are free to use whatever way of visualisation you are most comfortable with.
 In ggplot2 lpotting consists of different parts that declare which data is to be used, and another part that declares what "geom" is used to map this data onto our canvas. For example, if i wanted to plot the column ``A`` in the Dataframe ``Dataframe1`` as a boxplot, my code would look like this:
 
-```Python
-
+```python
 ggplot(data=Dataframe1)+ #the part that declares what data to plot
 geom_boxplot(mapping=aes(y=A, x=1)) # the part that declares how the data should map to  the canvas.
 
@@ -91,7 +90,7 @@ ggplot(data=a_data)+geom_boxplot(mapping = aes(y=bodysize_cm),outlier.colour = "
 ```
 ![bodysize1](figures/bodysize1.png)  
 As you can see in this plot, most data is bunched up at the bottom of the graph, with one outlier at the top.
-Given that the Y-axis is the bodysize of a small spider in centimeter, it is unlikely that a bodysize of over 500 cm represents a real datapoint. maybe someone forgot to place the decimal point during dataentry?
+Given that the Y-axis is the bodysize of a small spider in centimetres, it is unlikely that a bodysize of over 500 cm represents a real datapoint. maybe someone forgot to place the decimal point during dataentry?
 ```
 #remove the outlier:
 a_data_no_outliers <- subset(a_data, bodysize_cm<100) # remove all oversized spiders.
@@ -135,7 +134,9 @@ Before we redo the experiment, we would like to know if this difference is just 
 For this we are going to use min-max feature scaling:  
 
 <center>  
+
 ![min_max](figures/minmax.png)  
+
 </center>  
 
 which transforms a dataset so it is bounded between 0 and 1.  
