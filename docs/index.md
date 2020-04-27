@@ -133,7 +133,11 @@ Unfortunately something has gone wrong with the environmental control of the sec
 ![temp_diff](figures/temperature_difference.png)  
 Before we redo the experiment, we would like to know if this difference is just a shift in the mean, and if the distributions are roughly the same.
 For this we are going to use min-max feature scaling:  
+
+<center>  
 ![min_max](figures/minmax.png)  
+</center>  
+
 which transforms a dataset so it is bounded between 0 and 1.  
 
 used on a R Dataframe column, it could look like this:
@@ -178,6 +182,8 @@ ggplot(data=ata)+
 when looking at the Distributions, we can see that they are almost identical, although not exactly normal: both display a small but notable positive [skew](https://en.wikipedia.org/wiki/Skewness)(a longer "tail on the right). While small deviations are usually within the tolerance of most tests, stronger positive skew, could, for example, be remedied by a squareroot transform of the data.
 
 - take the square-root of the data and plot the distribution.
+
+
 
 details><summary>walkthrough</summary>
 <p>
@@ -284,5 +290,5 @@ While the correlation is very significant, the pairwise correlation (Rsquared) i
 
  # Finish
 
- 
+
 ![from:https://www.autodeskresearch.com/publications/samestats](figures/DinoSequentialSmaller.gif)
