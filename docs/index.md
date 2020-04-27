@@ -1,27 +1,15 @@
 
 # TOC
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:0 orderedList:0 -->
 
 - [TOC](#toc)
 - [Overview & Motivation:](#overview-motivation)
 - [Dataset1](#dataset1)
-- [we only want the rows where the value of B is below 300:](#we-only-want-the-rows-where-the-value-of-b-is-below-300)
-- [load libraries](#load-libraries)
-- [read in the data:](#read-in-the-data)
-- [plot as boxplot, colour outliers in red](#plot-as-boxplot-colour-outliers-in-red)
-- [remove the outlier:](#remove-the-outlier)
-- [redo the plot](#redo-the-plot)
-- [plot individual datapoints next to the histogram:](#plot-individual-datapoints-next-to-the-histogram)
 - [Dataset2](#dataset2)
-- [split the data](#split-the-data)
-- [add normalised height data as column to dataframes.](#add-normalised-height-data-as-column-to-dataframes)
-- [concatenate the two dataframes for convenience:](#concatenate-the-two-dataframes-for-convenience)
-- [take the squareroot of the normalised height-data:](#take-the-squareroot-of-the-normalised-height-data)
-- [create a new column with the squareroot transformed data in the dataframe:](#create-a-new-column-with-the-squareroot-transformed-data-in-the-dataframe)
-- [plot the  transformed data (blue) alongside the original (in red):](#plot-the-transformed-data-blue-alongside-the-original-in-red)
 - [Dataset3](#dataset3)
 
 <!-- /TOC -->
+
 # Overview & Motivation:
 **Today we are trying to do two things:**
  - Visualise raw data
