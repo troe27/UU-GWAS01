@@ -103,7 +103,7 @@ ggplot(data=a_data_no_outliers)+
   geom_histogram(data=subset(a_data_no_outliers, sex=="male"),mapping = aes(x=bodysize_cm), alpha=0.5, fill="purple")+
   geom_histogram(data=subset(a_data_no_outliers, sex=="female"),mapping = aes(x=bodysize_cm), alpha=0.5, fill="orange")
 ```
-![bodysize4](figures/bsize4.png)
+![bsize1](figures/bsize1.png)
 
 </p>
 </details>
