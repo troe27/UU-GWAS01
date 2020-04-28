@@ -235,7 +235,7 @@ Dataset 3 is a very famous dataset - its the 1886 Height Data collected by Galto
     # ggplot2 has a rather convenient plotting option in geom_smooth, so i dont even need to plug in a linear model library :)
     ggplot(data = ghdata)+
       geom_point(mapping = aes(x=mean_parent, y=height, colour=gender))+
-      geom_smooth(mapping = aes(x=mean_parent, y=height),method = "lm", formula = height~mean_parent) # height as a function of mid-parent height
+      geom_smooth(mapping = aes(x=mean_parent, y=height),method = "lm") # height as a function of mid-parent height
 
     # if i want to have a closer look at the summary stats of the model, i have to do a real fit, though.
 
