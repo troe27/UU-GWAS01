@@ -118,11 +118,7 @@ Unfortunately something has gone wrong with the environmental control of the sec
 Before we redo the experiment, we would like to know if this difference is just a shift in the mean, and if the distributions are roughly the same.
 For this we are going to use min-max feature scaling:
 
-
-
 ![min_max](figures/minmax.png)
-
-
 
 which transforms a dataset so it is bounded between 0 and 1.
 
