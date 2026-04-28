@@ -1,5 +1,4 @@
-![slide1](figures/001.png)
-![slide2](figures/002.png)
+
 
 # TOC
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:0 orderedList:0 -->
