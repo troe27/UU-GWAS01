@@ -31,6 +31,18 @@ This dataset has two issues - one of them a data-entry error, the other one a bi
 - what can you see in the histogram/scatterplot that you cannot see in the boxplot?
 - what is the biological significance of this?
 
+
+<details markdown="1">
+<summary markdown="span">Title</summary>
+
+### Heading
+
+- item one
+- item two
+
+</details>
+
+
 **Notes:**  
 I'm using the  [``ggplot2``](https://ggplot2.tidyverse.org/) library for plotting, since it simplifies the process a bit. The Syntax, however, is a little bit different.
 You are free to use whatever way of visualisation you are most comfortable with.
