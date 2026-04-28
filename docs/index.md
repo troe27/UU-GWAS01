@@ -37,8 +37,8 @@ You are free to use whatever way of visualisation you are most comfortable with.
 In ggplot2 lpotting consists of different parts that declare which data is to be used, and another part that declares what "geom" is used to map this data onto our canvas. For example, if i wanted to plot the column ``A`` in the Dataframe ``Dataframe1`` as a boxplot, my code would look like this:
 
 ```python
-ggplot(data=Dataframe1)+ #the part that declares what data to plot
-geom_boxplot(mapping=aes(y=A, x=1)) # the part that declares how the data should map to  the canvas.
+#ggplot(data=Dataframe1)+ #the part that declares what data to plot
+#geom_boxplot(mapping=aes(y=A, x=1)) # the part that declares how the data should map to  the canvas.
 
 ```
 
@@ -72,39 +72,34 @@ library("data.table")
 library("ggplot2")
 
 #read in the data:
-a_data <- read.csv("path/to/argiope_appensa_ss_simulata.csv", sep=",") #change path to yours!
+
 
 # plot as boxplot, colour outliers in red
-ggplot(data=a_data)+geom_boxplot(mapping = aes(y=bodysize_cm),outlier.colour = "red")
+
 ```
 ![bodysize1](figures/bodysize1.png)  
 As you can see in this plot, most data is bunched up at the bottom of the graph, with one outlier at the top.
 Given that the Y-axis is the bodysize of a small spider in centimetres, it is unlikely that a bodysize of over 500 cm represents a real datapoint. maybe someone forgot to place the decimal point during dataentry?
 ```
 #remove the outlier:
-a_data_no_outliers <- subset(a_data, bodysize_cm<100) # remove all oversized spiders.
+
 # redo the plot
-ggplot(data=a_data_no_outliers)+geom_boxplot(mapping = aes(y=bodysize_cm),outlier.colour = "red")
+
 ```
 ![bodysize2](figures/bodysize2.png)  
 This looks more reasonable.
 
 ```
 # plot individual datapoints next to the histogram:
-ggplot(data=a_data_no_outliers)+
-  geom_boxplot(mapping = aes(y=bodysize_cm),outlier.colour = "red")+
-  geom_point(mapping = aes(y=bodysize_cm, x=1), alpha=0.2) #  using geom_point instead of geom_boxplot
 
 ```
 ![bodysize3](figures/bodysize3.png)
 
 here you can see that the boxplot hid something: the data clusters into two groups: one of big spiders and one of small spiders. Looking at the full dataframe, one can guess that this is due to sexual dimorphism. In spiders, the female is often much larger than the male. lets plot them as separate histograms, males shaded purple, females in orange.
 ```
-ggplot(data=a_data_no_outliers)+
-  geom_histogram(data=subset(a_data_no_outliers, sex=="male"),mapping = aes(x=bodysize_cm), alpha=0.5, fill="purple")+
-  geom_histogram(data=subset(a_data_no_outliers, sex=="female"),mapping = aes(x=bodysize_cm), alpha=0.5, fill="orange")
+
 ```
-![bsize1](figures/bsize1.png)
+
 
 </p>
 </details>
@@ -141,23 +136,6 @@ z <- (dataframe$column-min(dataframe$column))/(max(dataframe$column)-min(datafra
 <p>
 
 ```
-ata <- read.csv("data/A_thaliana_ss_simulata.tsv", sep = "\t") # tab separated
-
-# split the data
-ata15= subset(ata, temperature == "15")
-ata22= subset(ata, temperature == "22")
-
-z15 <- (ata15$height-min(ata15$height))/(max(ata15$height)-min(ata15$height))
-z22 <- (ata22$height-min(ata22$height))/(max(ata22$height)-min(ata22$height))
-
-# add normalised height data as column to dataframes.
-ata15$height_norm <- z15
-ata22$height_norm <- z22
-
-ggplot(data=ata)+
-  geom_histogram(data = ata22,mapping = aes(x=height_norm), alpha=0.5, fill="orange") +
-  geom_histogram(data = ata15,mapping = aes(x=height_norm), alpha=0.5,fill ='blue')
-
 
 ```
 
@@ -179,17 +157,6 @@ when looking at the Distributions, we can see that they are almost identical, al
 <p>
 
 ```
-# concatenate the two dataframes for convenience:
-ata_new <- rbind(ata15,ata22)
-
-# take the squareroot of the normalised height-data:
-sqrt_height_norm <- sqrt(ata_new$height_norm)
-
-# create a new column with the squareroot transformed data in the dataframe:
-ata_new$sqrt_norm_height <- sqrt_height_norm
-
-# plot the  transformed data (blue) alongside the original (in red):
-ggplot(data=ata_new)+ geom_histogram(mapping = aes(x=sqrt_norm_height), alpha=0.5, fill='blue')+ geom_histogram(mapping = aes(x=height_norm), alpha=0.5, fill="red")
 
 ```
 
@@ -217,32 +184,7 @@ Dataset 3 is a very famous dataset - its the 1886 Height Data collected by Galto
     <details><summary>walkthrough</summary>
     <p>
 
-    ```python
-    # load data, remember the .tsv ending! this file is tab separated.
-    ghdata <- read.csv("data/galton_height_data.tsv", sep="\t")
 
-    # plot overall distribution of values as a histogram
-    ggplot(data = ghdata) + geom_histogram(mapping=aes(x=height))
-    # europeans, wondering why the numbers seem off? 1886 england didnt use centimetres
-
-    # plotting one boxplot per gender
-    ggplot(data = ghdata)+ geom_boxplot(mapping = aes(y=height, x=gender))
-
-    # take the mean of father & mother for each individual
-    # save as a column in the dataframe
-    ghdata$mean_parent <- rowMeans(ghdata[c('father', 'mother')], na.rm=TRUE)
-
-
-    # ggplot2 has a rather convenient plotting option in geom_smooth, so i dont even need to plug in a linear model library :)
-    ggplot(data = ghdata)+
-      geom_point(mapping = aes(x=mean_parent, y=height, colour=gender))+
-      geom_smooth(mapping = aes(x=mean_parent, y=height),method = "lm") # height as a function of mid-parent height
-
-    # if i want to have a closer look at the summary stats of the model, i have to do a real fit, though.
-
-    library("lme4")
-    height_fit <- lm(height~mean_parent, data=ghdata)
-    summary(height_fit)
     ```
 
     </p>
