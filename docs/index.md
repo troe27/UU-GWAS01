@@ -86,16 +86,11 @@ Given that the Y-axis is the bodysize of a small spider in centimetres, it is un
 # redo the plot
 
 ```
-![bodysize2](figures/bodysize2.png)  
-This looks more reasonable.
 
 ```
 # plot individual datapoints next to the histogram:
 
 ```
-![bodysize3](figures/bodysize3.png)
-
-here you can see that the boxplot hid something: the data clusters into two groups: one of big spiders and one of small spiders. Looking at the full dataframe, one can guess that this is due to sexual dimorphism. In spiders, the female is often much larger than the male. lets plot them as separate histograms, males shaded purple, females in orange.
 ```
 
 ```
